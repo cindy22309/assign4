@@ -45,7 +45,15 @@ void draw() {
 
   case GAME_START:
     /*---------Print Text-------------*/
-    text("press enter", 320, 240); // replace this with printText
+    textAlign(CENTER);
+    textSize(20);
+    text("press ENTER to Start",320,280);
+    textSize(60);
+    text("GLAIXIAN",320 , 240); // replace this with printText
+ 
+   
+    colorMode(RGB);
+    fill(95, 194, 226); 
     /*--------------------------------*/
     break;
 
@@ -71,7 +79,15 @@ void draw() {
 
   case GAME_PAUSE:
     /*---------Print Text-------------*/
-
+    textAlign(CENTER);
+    textSize(20);
+    text("press ENTER to Resume",320,280);
+    textSize(40);
+    text("PAUSE",320 , 240); // replace this with printText
+ 
+   
+    colorMode(RGB);
+    fill(95, 194, 226); 
     /*--------------------------------*/
     break;
 
@@ -115,13 +131,44 @@ void keyPressed() {
 
 /*---------Make Alien Function-------------*/
 void alienMaker() {
+ 
   aList[0]= new Alien(50, 50);
+  for(int i=0;i<12;i=i+1){  
+    aList[i]= new Alien(50+i*40,50);    
+  }
+  
+  aList[13]= new Alien(50, 100);
+  for(int i=0;i<12;i=i+1){
+    aList[13+i]= new Alien(50+i*40,100);
+  }
+  
+  aList[25]= new Alien(50, 150);
+  for(int i=0;i<12;i=i+1){
+    aList[25+i]= new Alien(50+i*40,150);
+  }
+  
+  aList[37]= new Alien(50, 200);
+  for(int i=0;i<12;i=i+1){
+    aList[37+i]= new Alien(50+i*40,200);
+  }
+  
+  aList[49]= new Alien(50, 250);
+  for(int i=0;i<5;i=i+1){
+    aList[49+i]= new Alien(50+i*40,250);
+  }
 }
 
+
+
+
+   
 void drawLife() {
   fill(230, 74, 96);
   text("LIFE:", 36, 455);
   /*---------Draw Ship Life---------*/
+  for(int x=0;x<3;x=x+1){
+  ellipse(78+(25*x),459,15,15);
+  }
 }
 
 void drawBullet() {
@@ -157,7 +204,7 @@ void drawAlien() {
       alien.move();    //Move Alien
       alien.display(); //Draw Alien
       /*---------Call Check Line Hit---------*/
-
+      
       /*--------------------------------------*/
     }
   }
@@ -198,6 +245,15 @@ void checkAlienDead() {
       Alien alien = aList[j];
       if (bullet != null && alien != null && !bullet.gone && !alien.die // Check Array isn't empty and bullet / alien still exist
       /*------------Hit detect-------------*/        ) {
+    if (
+       (float) bList[i].bX <=aList[j].aX + aList[i].aSize/2 && 
+        bList[i].bX >= aList[j].aX - aList[i].aSize/2 &&
+        bList[i].bY <=aList[j].aY + aList[i].aSize/2 && 
+        bList[i].bY >= aList[j].aY - aList[i].aSize/2){
+        removeBullet(bullet);
+        removeAlien(alien);
+        point+=10;
+      }
         /*-------do something------*/
       }
     }
@@ -313,12 +369,19 @@ void statusCtrl() {
     switch(status) {
 
     case GAME_START:
+   status = GAME_PLAYING;
+     break;
+ 
+      /*-----------add things here--------*/
+  case GAME_PLAYING:
+      status = GAME_PAUSE;
+      break;
+   case GAME_PAUSE:
       status = GAME_PLAYING;
       break;
-
-      /*-----------add things here--------*/
-
-    }
+    
+  
+}
   }
 }
 
@@ -343,4 +406,3 @@ void cheatKeys() {
     }
   }
 }
-
